@@ -1,0 +1,46 @@
+# dependencies
+node_modules
+
+# Solidity
+config/development/contracts.json
+config/development/*.sol.js
+config/test/contracts.json
+build
+
+## compiled output
+/dist
+/tmp
+/out-tsc
+
+## e2e
+/e2e/*.js
+/e2e/*.map
+
+# testing
+coverage
+
+# production
+build_webpack
+
+# misc
+/.sass-cache
+/connect.lock
+/libpeerconnection.log
+testem.log
+/typings
+/shippable
+.DS_Store
+.env
+npm-debug.log
+.truffle-solidity-loader
+
+# Logs
+logs
+*.log
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

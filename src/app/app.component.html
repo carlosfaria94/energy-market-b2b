@@ -1,0 +1,22 @@
+<mat-toolbar color="primary">Bounty dApp</mat-toolbar>
+
+<mat-card>
+  <div *ngIf="!credentials">
+    <p>Login with uPort (on Rinkeby) in order to show your name and avatar on the entries and submissions.</p>
+
+    <button mat-raised-button color="primary" (click)="uPortLogin()">
+      Login with uPort
+    </button>
+  </div>
+
+  <div *ngIf="credentials">
+    <h2 *ngIf="credentials.name">{{credentials.name}} welcome to the best bounty dApp!</h2>
+    <img *ngIf="credentials.avatar" src="{{credentials.avatar.uri}}">
+  </div>
+</mat-card>
+
+<app-oracle></app-oracle>
+
+<app-new-entry></app-new-entry>
+
+<app-entries></app-entries>

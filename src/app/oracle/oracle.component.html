@@ -1,0 +1,18 @@
+<mat-card>
+  <h2>ETH/EUR Price - Oracle</h2>
+  <p>Demonstrates how a Oracle works. First click in "UPDATE THE PRICE" in order to retreive the ETH price from the CoinMarketCap.
+    The value will then be saved to the Oracle smart contract.</p>
+
+  <h4 *ngIf="price === 0">The price does not exist on the Oracle. It needs to be updated.</h4>
+  <h3 *ngIf="price > 0">ETH Price: {{ price }} €</h3>
+  <button mat-raised-button color="primary" (click)="updatePrice()">
+    UPDATE THE PRICE
+  </button>
+  <button mat-raised-button color="primary" (click)="getEthPrice()">
+    GET CURRENT ETH PRICE
+  </button>
+
+  <small>
+    <p>NOTE: Price update is only permitted by the account that deploy the smart contract, normally the <b>first account</b>.</p>
+  </small>
+</mat-card>

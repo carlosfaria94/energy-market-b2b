@@ -1,0 +1,137 @@
+<h2 mat-dialog-title>Bounty #{{ entry.id }}</h2>
+
+<mat-dialog-content>
+  <mat-list>
+    <mat-list-item>Created at {{ entry.unsafeCreatedTimestamp | date }} by {{ entry.spec.uPortName }} {{ entry.owner }}</mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>{{ entry.bounty }} ETH in bounty</mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>This bounty is {{ entry.state }}</mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>Description: {{ entry.spec.description }}</mat-list-item>
+    <mat-divider></mat-divider>
+    <div *ngIf="entry.spec.additionalFile">
+      <mat-list-item>
+        <a href="{{ entry.spec.additionalFile }}">Additional file (hosted in IPFS)</a>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </div>
+  </mat-list>
+
+  <br>
+  <br>
+
+  <div *ngIf="entry.submissionCount > 0">
+    <div *ngIf="entry.acceptedSubmission && entry.state === 'Done'">
+      <h4 mat-dialog-title>Accepted submission</h4>
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <div *ngIf="entry.spec.uPortAvatar" mat-card-avatar class="cover" [style.background-image]="'url(' + entry.spec.uPortAvatar + ')'"></div>
+            <div *ngIf="!entry.spec.uPortAvatar" mat-card-avatar class="header-image"></div>
+            <mat-panel-title>
+              {{ entry.acceptedSubmission.spec.uPortName }} {{ entry.acceptedSubmission.owner }}
+            </mat-panel-title>
+            <mat-panel-description>
+              Created at {{ entry.acceptedSubmission.unsafeCreatedTimestamp | date }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <mat-list>
+            <mat-list-item>Created at {{ entry.acceptedSubmission.unsafeCreatedTimestamp | date }}</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>Owner: {{ entry.acceptedSubmission.owner }}</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>Description: {{ entry.acceptedSubmission.spec.description }}</mat-list-item>
+            <mat-divider></mat-divider>
+            <div *ngIf="entry.acceptedSubmission.spec.additionalFile">
+              <mat-list-item>
+                <a href="{{ entry.acceptedSubmission.spec.additionalFile }}">
+                  Additional file (hosted in IPFS)
+                </a>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+            </div>
+          </mat-list>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+      <br>
+      <br>
+    </div>
+
+    <h4 mat-dialog-title *ngIf="entry.state !== 'Done'">List of all submissions</h4>
+    <h4 mat-dialog-title *ngIf="entry.state === 'Done'">History of submissions</h4>
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let submission of submissions">
+        <mat-expansion-panel-header>
+          <div *ngIf="entry.spec.uPortAvatar" mat-card-avatar class="cover" [style.background-image]="'url(' + entry.spec.uPortAvatar + ')'"></div>
+          <div *ngIf="!entry.spec.uPortAvatar" mat-card-avatar class="header-image"></div>
+          <mat-panel-title>
+            {{ submission.spec.uPortName }} {{ submission.owner }}
+          </mat-panel-title>
+          <mat-panel-description>
+            Created at {{ submission.unsafeCreatedTimestamp | date }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-list>
+          <mat-list-item>Created at {{ submission.unsafeCreatedTimestamp | date }}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>Owner: {{ submission.owner }}</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>Description: {{ submission.spec.description }}</mat-list-item>
+          <mat-divider></mat-divider>
+          <div *ngIf="submission.spec.additionalFile">
+            <mat-list-item>
+              <a href="{{ submission.spec.additionalFile }}">
+                Additional file (hosted in IPFS)
+              </a>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+          </div>
+        </mat-list>
+
+        <br>
+        <button *ngIf="entry.state !== 'Done' && isOwner()" mat-raised-button color="primary" (click)="accept(submission)">
+          ACCEPT
+        </button>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <br>
+    <br>
+  </div>
+
+  <div *ngIf="entry.state === 'Canceled'">
+    <h4 mat-dialog-title>Not accepting submissions. Bounty canceled.</h4>
+  </div>
+
+  <div *ngIf="entry.state === 'Done'">
+    <h4 mat-dialog-title>Not accepting more submissions. The bounty it's finished.</h4>
+  </div>
+
+  <div *ngIf="(entry.state === 'Open' || entry.state === 'Submitted') && !isOwner()" class="new-submission">
+    <h4 mat-dialog-title>Submit your work</h4>
+    <mat-form-field>
+      <textarea matInput placeholder="Description" rows="10" (change)="setDescription($event)"></textarea>
+    </mat-form-field>
+    <div class="file-upload">
+      <label for="file">Choose an additional file</label>
+      <input type="file" id="file" (change)="handleFileInput($event.target)">
+    </div>
+    <button [disabled]="submitting" mat-raised-button color="primary" (click)="submit()">
+      SUBMIT
+    </button>
+    <mat-progress-bar *ngIf="submitting" mode="indeterminate"></mat-progress-bar>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button *ngIf="entry.state === 'Open' && isOwner()" mat-raised-button color="warn" (click)="cancelEntry()">
+    CANCEL BOUNTY
+  </button>
+  <button *ngIf="!entry.isBountyCollected && entry.state === 'Done' && isBountyOwner()" mat-raised-button color="primary" (click)="claimBounty()">
+    CLAIM YOUR {{ entry.bounty }} ETH BOUNTY
+  </button>
+</mat-dialog-actions>

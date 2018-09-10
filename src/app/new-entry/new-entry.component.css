@@ -1,0 +1,14 @@
+.mat-card {
+  margin-top: 20px;
+}
+
+.new-bounty {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.file-upload {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

@@ -1,0 +1,25 @@
+<mat-card *ngIf="entries" class="external-card">
+
+  <mat-card-header>
+    <mat-card-title>List of entries</mat-card-title>
+  </mat-card-header>
+
+  <mat-card *ngFor="let entry of entries" class="entry">
+    <mat-card-header>
+      <div *ngIf="entry.spec.uPortAvatar" mat-card-avatar class="cover" [style.background-image]="'url(' + entry.spec.uPortAvatar + ')'"></div>
+      <div *ngIf="!entry.spec.uPortAvatar" mat-card-avatar class="header-image"></div>
+      <mat-card-title>{{ entry.spec.uPortName }} {{ entry.owner }}</mat-card-title>
+      <mat-card-subtitle>Created at {{ entry.unsafeCreatedTimestamp | date }}</mat-card-subtitle>
+    </mat-card-header>
+    <!--<img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">-->
+    <mat-card-content>
+      <p>{{ entry.bounty }} ETH in bounty</p>
+      <p>There are {{ entry.submissionCount }} submissions</p>
+      <p>This bounty is {{ entry.state }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-stroked-button color="primary" (click)="openDialog(entry)">SEE DETAILS</button>
+    </mat-card-actions>
+  </mat-card>
+
+</mat-card>

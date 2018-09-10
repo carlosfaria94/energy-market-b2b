@@ -1,0 +1,23 @@
+<mat-card>
+  <mat-card-header>Your account: {{ account }}</mat-card-header>
+</mat-card>
+
+<mat-card>
+  <mat-card-header>New Bounty</mat-card-header>
+  <mat-card-content class="new-bounty">
+    <mat-form-field>
+      <textarea matInput placeholder="Description" rows="10" (change)="setDescription($event)"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="number" matInput id="bounty" placeholder="Bounty in ETH" (change)="setBounty($event)">
+    </mat-form-field>
+    <div class="file-upload">
+      <label for="file">Choose an additional file</label>
+      <input type="file" id="file" (change)="handleFileInput($event.target)">
+    </div>
+    <button [disabled]="creatingBounty" mat-raised-button color="primary" (click)="createBounty()">
+      CREATE
+    </button>
+    <mat-progress-bar *ngIf="creatingBounty" mode="indeterminate"></mat-progress-bar>
+  </mat-card-content>
+</mat-card>
