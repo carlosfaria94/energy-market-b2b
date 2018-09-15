@@ -20,7 +20,7 @@ export class OracleComponent implements OnInit {
 
   ngOnInit() {
     this.watchAccount();
-    this.setContract();
+    // this.setContract();
   }
 
   watchAccount() {
@@ -31,10 +31,10 @@ export class OracleComponent implements OnInit {
 
   async setContract() {
     try {
-      const contract = await this.web3Service.artifactsToContract(
+      /* const contract = await this.web3Service.artifactsToContract(
         this.web3Service.oracleArtifacts
       );
-      this.ethPriceOracle = await contract.deployed();
+      this.ethPriceOracle = await contract.deployed(); */
     } catch (e) {
       console.log(e);
       this.setStatus(e.message + ' See log for more info');

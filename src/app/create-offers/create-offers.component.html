@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Place a Sell Offer in Order Ref. {{ order.id }}</h2>
+
+<mat-dialog-content class="new-offer">
+  <mat-form-field>
+    <input type="string" matInput id="quantity" value="Quantity: {{ order.quantity }} MW/h" disabled>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="string" matInput id="product" value="Product: {{ order.product }}" disabled>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="number" matInput id="price" placeholder="Insert your offer price in Euros" (change)="setPrice($event)">
+  </mat-form-field>
+  <button [disabled]="submittingOffer" mat-raised-button color="primary" (click)="submitOffer()">
+    PLACE OFFER
+  </button>
+  <mat-progress-bar *ngIf="submittingOffer" mode="indeterminate"></mat-progress-bar>
+</mat-dialog-content>

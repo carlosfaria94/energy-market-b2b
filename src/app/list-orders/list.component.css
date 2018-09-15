@@ -1,0 +1,14 @@
+h1 {
+  margin: 20px;
+}
+
+.table-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 800px;
+}

@@ -4,8 +4,8 @@ import { Subject } from 'rxjs/Rx';
 
 declare let require: any;
 const Web3 = require('web3');
-const organisationArtifacts = require('../../../build/contracts/Organisation.json');
-const oracleArtifacts = require('../../../build/contracts/EthPriceOracle.json');
+// const organisationArtifacts = require('../../../build/contracts/Organisation.json');
+// const oracleArtifacts = require('../../../build/contracts/EthPriceOracle.json');
 
 declare let window: any;
 
@@ -15,8 +15,8 @@ export class Web3Service {
   private accounts: string[];
   public ready = false;
   public accountsObservable = new Subject<string[]>();
-  public organisationArtifacts = organisationArtifacts;
-  public oracleArtifacts = oracleArtifacts;
+  // public organisationArtifacts = organisationArtifacts;
+  // public oracleArtifacts = oracleArtifacts;
 
   constructor() {
     window.addEventListener('load', event => {

@@ -19,21 +19,25 @@ import {
   MatListModule,
   MatDividerModule,
   MatExpansionModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatTableModule,
+  MatPaginatorModule
 } from '@angular/material';
-import { NewEntryComponent } from './new-entry/new-entry.component';
 import { UtilModule } from './util/util.module';
-import { EntriesComponent } from './entries/entries.component';
-import { DetailsComponent } from './entries/details/details.component';
 import { OracleComponent } from './oracle/oracle.component';
+import { ListOrdersComponent } from './list-orders/list.component';
+import { CreateOrdersComponent } from './create-orders/create.component';
+import { CreateOffersComponent } from './create-offers/create-offers.component';
+import { ListOffersComponent } from './list-offers/list-offers.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NewEntryComponent,
-    EntriesComponent,
-    DetailsComponent,
-    OracleComponent
+    OracleComponent,
+    ListOrdersComponent,
+    CreateOrdersComponent,
+    CreateOffersComponent,
+    ListOffersComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -52,12 +56,14 @@ import { OracleComponent } from './oracle/oracle.component';
     MatDividerModule,
     MatExpansionModule,
     MatProgressBarModule,
+    MatTableModule,
+    MatPaginatorModule,
     BrowserModule,
     FormsModule,
     HttpModule,
     UtilModule
   ],
-  entryComponents: [DetailsComponent],
+  entryComponents: [ListOffersComponent, CreateOffersComponent],
   providers: [],
   bootstrap: [AppComponent]
 })
