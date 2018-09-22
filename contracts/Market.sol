@@ -1,9 +1,9 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
-import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import './energy_token.sol';
+import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 
 contract Market {
-    // It prevents overflow issues
     using SafeMath for uint256;
     // It maps the IDs to orders
     mapping (uint256 => Entry) public orders;
@@ -34,6 +34,8 @@ contract Market {
         uint256 id;
         address owner;
         uint256 price;
+        uint256 value;
+        bytes32 secretHash;
         uint256 unsafeCreatedTimestamp;
     }
 
@@ -136,11 +138,23 @@ contract Market {
         orders[_orderId].state = uint(State.Canceled);
     }
 
-    function submitOffer(uint256 _oderId, uint256 _price) 
+    function submitOffer(uint256 _oderId, uint256 _price, bytes32 _secretHash) 
         public payable 
         stop_if_emergency()
     {
-        
+        Order storage order = orders[_oderId];
+        // Only possible to submit an Offer when an order state is Open
+        require(order.state == uint(State.Open), "Order is not open to offers");
+        order.offerCount = order.offerCount.add(1);
+        Offer memory newOffer = Offer(
+            offerCount,
+            msg.sender,
+            _price,
+            _secretHash,
+            msg.value,
+            block.timestamp
+        );
+        order.offers[order.offerCount] = newOffer;
     }
 
     function acceptOffer(uint256 _orderId, uint256 _offerId) 
