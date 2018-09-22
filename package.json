@@ -7,6 +7,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test --watch=false",
+    "test-contract": "truffle test",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -25,9 +26,12 @@
     "@angular/platform-server": "^5.2.9",
     "@angular/router": "^5.2.9",
     "core-js": "^2.5.4",
-    "openzeppelin-solidity": "1.12.0",
+    "openzeppelin-solidity": "^1.12.0",
     "rxjs": "^5.5.8",
+    "truffle": "^4.1.14",
     "web3": "1.0.0-beta.34",
+    "web3-eth": "^1.0.0-beta.36",
+    "web3-utils": "^1.0.0-beta.36",
     "zone.js": "^0.8.23"
   },
   "devDependencies": {
