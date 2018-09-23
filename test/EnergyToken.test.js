@@ -105,20 +105,21 @@ contract('EnergyToken', accounts => {
 
     it.only('get tokens by owner', async () => {
 
-        const totalProducerTokens = 10;
-        const totalSupplierTokens = 10;
-        const totalRandomOwnerTokens = 10;
-        const producerMintArr = [];
-        for(let i = 0; i < totalProducerTokens; i++) {
-            const tokenURI = Web3Utils.soliditySha3('producer'+i)
-            producerMintArr.push(token.mint(producer.address, tokenURI))
+        const ownerAddresses = [producer.address, supplier.address]
+        const totalTokens = 10*ownerAddresses.length;
+        const producerMintArr = []
+
+        for(let i = 0; i < totalTokens; i++) {
+            const tokenURI = Web3Utils.soliditySha3('testToken'+i)
+            producerMintArr.push(token.mint(ownerAddresses[i%ownerAddresses.length], tokenURI))
         }
-        await Promise.all(producerMintArr)
+        const txArr = await Promise.all(producerMintArr)
 
-        const producerTokensIds = token.getTokensOwnedBy.call(producer.address)
+        const producerTokensIds = await token.getTokensOwnedBy.call(producer.address)
+        assert.equal(producerTokensIds.length, totalTokens/ownerAddresses.length, 'Unexpected number of tokens')
 
-        console.log(producerTokensIds)
-        assert.equal(producerTokensIds.length, totalProducerTokens)
+        const totalSupply = await token.totalSupply.call()
+        assert.equal(totalSupply, totalTokens, 'Unexpected total supply of tokens')
 
     })
 

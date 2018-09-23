@@ -60,7 +60,7 @@ contract EnergyToken is ERC721Token {
     }
 
     function getTokensOwnedBy(address _owner) external view returns (uint256[]) {
-        return super.ownedTokens[_owner];
+        return ownedTokens[_owner];
     }
 
     function bytes32ToString(bytes32 _bytes32) public pure returns (string){
