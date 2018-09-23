@@ -1,8 +1,10 @@
 pragma solidity ^0.4.24;
 
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
+import { Ownable } from 'openzeppelin-solidity/contracts/ownership/Ownable.sol';
+import { Destructible } from 'openzeppelin-solidity/contracts/lifecycle/Destructible.sol';
 
-contract Market {
+contract Market is Ownable, Destructible {
     using SafeMath for uint256;
     // It maps the IDs to orders
     mapping (uint256 => Order) public orders;
@@ -160,11 +162,11 @@ contract Market {
         require(order.state == uint(State.Open), "Order is not open to offers");
         order.offerCount = order.offerCount.add(1);
         Offer memory newOffer = Offer(
-            offerCount,
+            order.offerCount,
             msg.sender,
             _price,
-            _secretHash,
             msg.value,
+            _secretHash,
             block.timestamp,
             false
         );
@@ -243,7 +245,7 @@ contract Market {
         isClose(_orderId)
     {
         Order storage order = orders[_orderId];
-        Offer offer = order.offers[_offerId];
+        Offer storage offer = order.offers[_offerId];
         require(msg.sender != order.acceptedOffer.owner, "Owner of the accepted offer cannot withdraw his funds with this function");
         require(offer.isWithdraw == false, "Withdraw was already collected");
         require(msg.sender == offer.owner, "Offer owner is the only one able to execute the withdraw");
