@@ -102,4 +102,24 @@ contract('EnergyToken', accounts => {
     const supplierTokenBalance = await token.balanceOf(supplier.address)
     assert.equal(supplierTokenBalance,1) // check supplier token balance
   })
+
+    it.only('get tokens by owner', async () => {
+
+        const totalProducerTokens = 10;
+        const totalSupplierTokens = 10;
+        const totalRandomOwnerTokens = 10;
+        const producerMintArr = [];
+        for(let i = 0; i < totalProducerTokens; i++) {
+            const tokenURI = Web3Utils.soliditySha3('producer'+i)
+            producerMintArr.push(token.mint(producer.address, tokenURI))
+        }
+        await Promise.all(producerMintArr)
+
+        const producerTokensIds = token.getTokensOwnedBy.call(producer.address)
+
+        console.log(producerTokensIds)
+        assert.equal(producerTokensIds.length, totalProducerTokens)
+
+    })
+
 })
