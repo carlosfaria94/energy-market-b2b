@@ -82,6 +82,12 @@ contract Market is Ownable, Destructible {
         _;
     }
 
+    // Contract constructur which set the circuit breaker to false and orderCount to 0
+    constructor() public {
+        orderCount = 0;
+        stopped = false;
+    }
+
     /**
     * @dev Adds an order on the orders persistent storage
     * @param _action uint256 Order action, it can only be Buy or Sell
