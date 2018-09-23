@@ -103,7 +103,7 @@ contract('EnergyToken', accounts => {
     assert.equal(supplierTokenBalance,1) // check supplier token balance
   })
 
-    it.only('get tokens by owner', async () => {
+    it('get tokens by owner', async () => {
 
         const ownerAddresses = [producer.address, supplier.address]
         const totalTokens = 10*ownerAddresses.length;
