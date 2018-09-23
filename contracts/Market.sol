@@ -5,7 +5,7 @@ import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 contract Market {
     using SafeMath for uint256;
     // It maps the IDs to orders
-    mapping (uint256 => Entry) public orders;
+    mapping (uint256 => Order) public orders;
     // Number of orders
     uint256 orderCount;
     // Circuit breaker
