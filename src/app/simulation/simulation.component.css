@@ -1,0 +1,20 @@
+h1 {
+  margin: 20px;
+}
+
+button {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.table-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  margin-bottom: 50px;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 800px;
+}

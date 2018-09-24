@@ -22,7 +22,7 @@ export class CreateOffersComponent implements OnInit {
   submitting = false;
   account: string;
   userInput = {
-    price: 0
+    totalPrice: 0
   };
 
   constructor(
@@ -46,8 +46,8 @@ export class CreateOffersComponent implements OnInit {
       this.submitting = false;
       return;
     }
-    if (this.userInput.price <= 0) {
-      this.setStatus('Price is not set');
+    if (this.userInput.totalPrice <= 0) {
+      this.setStatus('Total price is not set');
       this.submitting = false;
       return;
     }
@@ -55,11 +55,11 @@ export class CreateOffersComponent implements OnInit {
     try {
       // TODO: Hash of the secret
       const ethPrice = await this.marketService.getEthPrice();
-      const offerInEth = this.userInput.price / ethPrice;
+      const offerInEth = this.userInput.totalPrice / ethPrice;
       console.log('Setting with value of', offerInEth, 'ETH');
       const transaction = await this.market.submitOffer(
         this.order.id,
-        this.userInput.price,
+        this.userInput.totalPrice,
         '0x5df',
         {
           value: this.web3Service.web3.utils.toWei(
@@ -90,8 +90,11 @@ export class CreateOffersComponent implements OnInit {
   }
 
   setPrice(e) {
-    console.log('Setting price to: ' + e.target.value);
-    this.userInput.price = e.target.value;
+    const price = e.target.value;
+    if (price >= 0) {
+      this.userInput.totalPrice = e.target.value * this.order.quantity;
+      console.log('Setting total price to: ' + this.userInput.totalPrice);
+    }
   }
 
   setStatus(status) {

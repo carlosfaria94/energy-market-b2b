@@ -8,22 +8,22 @@ export class AccountAddressPipe implements PipeTransform {
     let name = '';
     switch (address.toLowerCase()) {
       case '0x997c2e4e571286e0ffc185f833348e6ad825c11e':
-        name = 'Producer 1';
+        name = 'Solar Producer';
         break;
       case '0x18fe337eb470d59df95fa667751df47db0ebd833':
-        name = 'Producer 2';
+        name = 'Wind Producer';
         break;
       case '0x1a9486df1e5613279200e707bd4f3b669ff7bccc':
-        name = 'Producer 3';
+        name = 'Other Producer';
         break;
       case '0x06d38a7c8ccab6adf0e68d96349ddc573bbaa7a3':
-        name = 'Supplier 1';
+        name = 'EDP';
         break;
       case '0x70f6a930bc9af0d35cf50a9e2d5151d40cce2bc5':
-        name = 'Supplier 2';
+        name = 'Energia Simples';
         break;
       case '0xaa660a5ee9e642fffe6df22528fe086d04fcd535':
-        name = 'Supplier 3';
+        name = 'Boa Energia';
         break;
       default:
         name = 'NAME NOT SET';

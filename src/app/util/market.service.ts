@@ -55,7 +55,7 @@ export class MarketService {
     let product = '';
     switch (productId) {
       case 0:
-        product = 'Day';
+        product = 'Day ahead';
         break;
       case 1:
         product = 'Week';

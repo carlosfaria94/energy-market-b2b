@@ -123,6 +123,50 @@ export class ListOrdersComponent implements OnInit {
       console.log(`New Order with ID: ${orderId}`);
       this.addOrder(orderId);
     });
+
+    const newOfferEvent = this.market.NewOffer({
+      _from: this.web3Service.web3.eth.coinbase
+    });
+    newOfferEvent.watch((e, result) => {
+      if (e) {
+        console.log(e);
+        this.setStatus(e.message + ' See log for more info');
+      }
+      const orderId = result.args.orderId.toNumber();
+      const offerId = result.args.offerId.toNumber();
+      console.log(`New offer at ID: ${offerId}`);
+      this.updateOrder(orderId);
+    });
+
+    const offerAcceptedEvent = this.market.OfferAccepted({
+      _from: this.web3Service.web3.eth.coinbase
+    });
+    offerAcceptedEvent.watch((e, result) => {
+      if (e) {
+        console.log(e);
+        this.setStatus(e.message + ' See log for more info');
+      }
+      const orderId = result.args.orderId.toNumber();
+      const offerId = result.args.offerId.toNumber();
+      console.log(`New offer at ID: ${offerId}`);
+      this.updateOrder(orderId);
+    });
+  }
+
+  async updateOrder(id) {
+    console.log('Updating order with ID', id);
+    try {
+      // Find the order with the ID to update
+      const index = this.orders.findIndex(order => order.id === id);
+      if (index !== -1) {
+        const newOrder = await this.getOrder(id);
+        this.orders[index] = newOrder;
+        this.dataSource = new MatTableDataSource<Order>(this.orders);
+      }
+    } catch (e) {
+      console.log(e);
+      this.setStatus(e.message + ' See log for more info');
+    }
   }
 
   async addOrder(id) {

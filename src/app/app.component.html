@@ -14,3 +14,16 @@
     GO PRIVATE
   </button>
 </div>
+
+<div class="go-public">
+  <button mat-button color="primary" *ngIf="!isSimulation" (click)="goSimulation()">
+    ENERGY TRADING SIMULATION
+  </button>
+  <button mat-button color="primary" *ngIf="isSimulation" (click)="goSimulation()">
+    CLOSE SIMULATION
+  </button>
+</div>
+
+<div *ngIf="isSimulation">
+  <app-simulation></app-simulation>
+</div>

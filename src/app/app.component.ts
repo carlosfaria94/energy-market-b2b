@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material';
 export class AppComponent {
   credentials: any;
   isPublic = false;
+  isSimulation = false;
 
   constructor(private matSnackBar: MatSnackBar) {}
 
@@ -19,6 +20,16 @@ export class AppComponent {
     } else {
       console.log('Going public...');
       this.isPublic = true;
+    }
+  }
+
+  goSimulation() {
+    if (this.isSimulation) {
+      console.log('Going to simulation...');
+      this.isSimulation = false;
+    } else {
+      console.log('Going to market...');
+      this.isSimulation = true;
     }
   }
 

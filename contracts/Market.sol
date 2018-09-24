@@ -41,7 +41,7 @@ contract Market is Ownable, Destructible {
     enum Action { Buy, Sell }
     enum Product { Day, Week, Month }
 
-    event NewOrder(uint256 indexed orderId);
+    event NewOrder(uint256 indexed orderId); 
     event OrderCanceled(uint256 indexed orderId);
     event NewOffer(uint256 indexed orderId, uint256 indexed offerId);
     event OfferAccepted(uint256 indexed orderId, uint256 indexed offerId);
@@ -91,7 +91,7 @@ contract Market is Ownable, Destructible {
     /**
     * @dev Adds an order on the orders persistent storage
     * @param _action uint256 Order action, it can only be Buy or Sell
-    * @param _quantity uint256 Order quantity in MW/h
+    * @param _quantity uint256 Order quantity in MWh
     * @param _product uint256 Order product, it can only be Day, Week or Month
     */
     function submitOrder(uint256 _action, uint256 _quantity, uint256 _product) 

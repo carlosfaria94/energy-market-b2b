@@ -22,7 +22,7 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field>
-        <input type="number" matInput id="bounty" placeholder="Estimated Production (MW/h)" (change)="setQuantity($event)">
+        <input type="number" matInput id="bounty" placeholder="Estimated Production (MWh)" (change)="setQuantity($event)">
       </mat-form-field>
       <button [disabled]="submittingOrder" mat-raised-button color="primary" (click)="submitOrder()">
         PLACE ORDER
