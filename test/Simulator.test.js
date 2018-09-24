@@ -17,14 +17,53 @@ contract.only('Simulator', accounts => {
     const producer = web3Eth.accounts.wallet.add(producerPrivateKey); // web3Eth.accounts.privateKeyToAccount(producerPrivateKey)
     const supplier = web3Eth.accounts.wallet.add(supplierPrivateKey); // web3Eth.accounts.privateKeyToAccount(supplierPrivateKey)
 
-    it('has a name', async () => {
+    it('get tokens', async () => {
         const host = web3.currentProvider.host;
-        console.log(host)
         const token = await EnergyToken.deployed();
         const escrow = await EnergyEscrow.deployed();
-        console.log(host,token.address,escrow.address)
-        //Simulator.getOwnerTokens(host,toke.address,EnergyEscrow.address);
-        //console.log(this)
+
+        // mint some dummy tokens
+        await token.mint(escrow.address, 'descriptionA');
+        await token.mint(escrow.address, 'descriptionB');
+
+
+        const eth = Simulator.getEthObj(host)
+        const tokenIds  = await Simulator.getOwnerTokens(eth,token.address,EnergyEscrow.address);
+        assert.equal(tokenIds.length,2)
     });
 
+    it('get tokens URIs', async () => {
+        const host = web3.currentProvider.host;
+        const token = await EnergyToken.deployed();
+        const escrow = await EnergyEscrow.deployed();
+
+        // mint some dummy tokens
+        await token.mint(escrow.address, 'descriptionC');
+        await token.mint(escrow.address, 'descriptionD');
+
+
+        const eth = Simulator.getEthObj(host)
+        const tokenIds  = await Simulator.getOwnerTokens(eth,token.address,EnergyEscrow.address);
+        const tokenURIs  = await Simulator.getTokensURI(eth,token.address,tokenIds);
+        assert.equal(tokenURIs.length,4)
+    });
+
+    it('sign URIS',() => {
+        const host = web3.currentProvider.host;
+        const token = await EnergyToken.deployed();
+        const escrow = await EnergyEscrow.deployed();
+
+        // mint some dummy tokens
+        await token.mint(escrow.address, 'descriptionE');
+        await token.mint(escrow.address, 'descriptionF');
+
+
+        const eth = Simulator.getEthObj(host)
+        const tokenIds  = await Simulator.getOwnerTokens(eth,token.address,EnergyEscrow.address);
+        const tokenURIs  = await Simulator.getTokensURI(eth,token.address,tokenIds);
+
+        const creatorPrivateKey = '0x1546e1a27353b3ab3dce3d94faf150cd1f5b86c25c04ae8191d13ec7a844e479'
+        const creator = web3Eth.accounts.wallet.add(creatorPrivateKey); // web3Eth.accounts.privateKeyToAccount(creatorPrivateKey);
+        // TODO sign hashes
+    })
 });
