@@ -31,11 +31,17 @@ const getTokensURI = async (eth, tokenAddress, tokenIds) => {
     return await Promise.all(tokenURIPromises)
 }
 
-const firstFunction = () => console.log('FIRST FUNCTION');
+const signURIs = (eth, privateKey, tokenURIs) => {
+    //const prefix = '\x19Ethereum Signed Message:\n32'
+    //utils.sha3(prefix+sig.message.length+sig.message)
+    const wallet = eth.accounts.wallet.add(privateKey);
+    const signedTokenURIs = tokenURIs.map(uri => wallet.sign(uri).signature)
+    return signedTokenURIs
+}
 
 module.exports = {
-    firstFunction,
     getEthObj,
     getOwnerTokens,
-    getTokensURI
+    getTokensURI,
+    signURIs
 };

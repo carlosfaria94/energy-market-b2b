@@ -5,7 +5,7 @@ const Web3Eth = require('web3-eth'); // need a more recent version of web3 for t
 const EnergyToken = artifacts.require('EnergyToken');
 const EnergyEscrow = artifacts.require('EnergyEscrow');
 
-contract.only('Simulator', accounts => {
+contract('Simulator', accounts => {
     // ganache mnemonic
     //   firm laugh oppose example joy soda book syrup gate laundry disagree right
     const creatorPrivateKey = '0x1546e1a27353b3ab3dce3d94faf150cd1f5b86c25c04ae8191d13ec7a844e479'
@@ -48,7 +48,7 @@ contract.only('Simulator', accounts => {
         assert.equal(tokenURIs.length,4)
     });
 
-    it('sign URIS',() => {
+    it('sign URIS',async () => {
         const host = web3.currentProvider.host;
         const token = await EnergyToken.deployed();
         const escrow = await EnergyEscrow.deployed();
@@ -61,9 +61,8 @@ contract.only('Simulator', accounts => {
         const eth = Simulator.getEthObj(host)
         const tokenIds  = await Simulator.getOwnerTokens(eth,token.address,EnergyEscrow.address);
         const tokenURIs  = await Simulator.getTokensURI(eth,token.address,tokenIds);
-
-        const creatorPrivateKey = '0x1546e1a27353b3ab3dce3d94faf150cd1f5b86c25c04ae8191d13ec7a844e479'
-        const creator = web3Eth.accounts.wallet.add(creatorPrivateKey); // web3Eth.accounts.privateKeyToAccount(creatorPrivateKey);
-        // TODO sign hashes
+        const signedTokenURIs = Simulator.signURIs(eth,creatorPrivateKey,tokenURIs);
+        // don't know other goodd tests to make
+        assert.equal(tokenURIs.length,6)
     })
 });
