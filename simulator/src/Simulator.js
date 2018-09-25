@@ -38,9 +38,15 @@ const signURIs = (eth, privateKey, tokenURIs) => {
     return signedTokenURIs
 }
 
+const recoverURISigner = (eth, tokenURIs, signedTokenURIs) => {
+    const tokenURIsigners = tokenURIs.map((uri,idx) => eth.accounts.recover(tokenURIs[idx], signedTokenURIs[idx]))
+    return tokenURIsigners
+}
+
 module.exports = {
     getEthObj,
     getOwnerTokens,
     getTokensURI,
-    signURIs
+    signURIs,
+    recoverURISigner
 };

@@ -64,5 +64,10 @@ contract('Simulator', accounts => {
         const signedTokenURIs = Simulator.signURIs(eth,creatorPrivateKey,tokenURIs);
         // don't know other goodd tests to make
         assert.equal(tokenURIs.length,6)
+
+        const signers = Simulator.recoverURISigner(eth,tokenURIs,signedTokenURIs)
+        const uniqueSigners = [ ...new Set(signers) ]
+        assert.equal(uniqueSigners.length,1)
+        assert.equal(uniqueSigners[0].toLowerCase(),creator.address.toLowerCase())
     })
 });
