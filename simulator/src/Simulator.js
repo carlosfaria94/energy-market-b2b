@@ -6,7 +6,7 @@ const solc = require('solc');
 
 console.log('index file running');
 
-const TOKENS_INTERFACE = fs.readFileSync('./simulator/src/TokenInterface.sol',{ encoding: 'utf8' });
+const TOKENS_INTERFACE = fs.readFileSync('./simulator/src/ContractInterface.sol',{ encoding: 'utf8' });
 const TOKEN_CONTRACT = solc.compile(TOKENS_INTERFACE, 1);
 
 const getEthObj = (providerHost) => new Eth(Eth.givenProvider || providerHost);
