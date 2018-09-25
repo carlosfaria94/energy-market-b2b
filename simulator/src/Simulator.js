@@ -1,14 +1,12 @@
 /*jshint esversion: 6 */
+const fs = require('fs');
+
 const Eth = require('web3-eth');
 const solc = require('solc');
 
 console.log('index file running');
 
-const TOKENS_INTERFACE = 'pragma solidity ^0.4.11;\n' +
-'interface Token {\n' +
-'function getTokensOwnedBy(address _owner) external view returns (uint256[]);\n' +
-'function tokenURI(uint256 _tokenId) public view returns (string);\n' +
-'}';
+const TOKENS_INTERFACE = fs.readFileSync('./simulator/src/TokenInterface.sol',{ encoding: 'utf8' });
 const TOKEN_CONTRACT = solc.compile(TOKENS_INTERFACE, 1);
 
 const getEthObj = (providerHost) => new Eth(Eth.givenProvider || providerHost);
