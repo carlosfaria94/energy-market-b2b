@@ -17,6 +17,12 @@ const getTokenContract = (eth,tokenAddress) => {
     const token = new eth.Contract(tokenInterface, tokenAddress);
     return token
 }
+const getEscrowContract = (eth,escrowAddress) => {
+    const escrowInterface = JSON.parse(TOKEN_CONTRACT.contracts[':Escrow'].interface)
+
+    const escrow = new eth.Contract(escrowInterface, escrowAddress);
+    return escrow
+}
 
 const getOwnerTokens = async (eth,tokenAddress,escrowAddress) => {
     const token = getTokenContract(eth,tokenAddress)
@@ -43,10 +49,33 @@ const recoverURISigner = (eth, tokenURIs, signedTokenURIs) => {
     return tokenURIsigners
 }
 
+const simulateProducer = async (eth, tokenAddress, escrowAddress, producerPrivateKey) => {
+  const allEscrowTokens = await getOwnerTokens(eth, tokenAddress, escrowAddress);
+  console.log('allEscrowTokens: ',allEscrowTokens)
+
+  const wallet = eth.accounts.wallet.add(producerPrivateKey);
+  // const token = getTokenContract(eth,tokenAddress);
+  const escrow = getEscrowContract(eth,escrowAddress);
+  const escrowPaymentDetails = await Promise.all(allEscrowTokens.map(id => escrow.methods.getPaymentDetails(id).call()));
+  const filterProducerTokens = allEscrowTokens.filter((id,idx) => escrowPaymentDetails[idx].producer === wallet.address);
+
+  const tokenURIs = await getTokensURI(eth, tokenAddress, filterProducerTokens);
+  console.log(tokenURIs)
+  const signedTokenURIs = await signURIs(eth, producerPrivateKey, tokenURIs);
+  console.log(signedTokenURIs)
+
+  // TODO: SIMULATE PROUDUCER SIGNING THEIR TOKENS
+  // FILTER PRODUCER.ADDRESS PAYMENTS TOKEN IDS
+  // SIGN URIs
+}
+
+// TODO SIMULATE SUPPLIERS RELEASING SECRETS?!?
+
 module.exports = {
     getEthObj,
     getOwnerTokens,
     getTokensURI,
     signURIs,
-    recoverURISigner
+    recoverURISigner,
+  simulateProducer
 };
