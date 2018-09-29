@@ -43,6 +43,10 @@ const recoverURISigner = (eth, tokenURIs, signedTokenURIs) => {
     return tokenURIsigners
 }
 
+const simulateProduction = (providerHost, tokenAddress, escrowAddress, producerAddress) => {
+
+}
+
 module.exports = {
     getEthObj,
     getOwnerTokens,
