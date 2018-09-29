@@ -5,3 +5,6 @@ interface Token {
     function tokenURI(uint256 _tokenId) public view returns (string); 
 }
 
+interface Escrow {
+  function getPaymentDetails(uint256 _orderId) external view returns (address producer, address supplier, uint value);
+}
