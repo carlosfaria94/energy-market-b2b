@@ -1,14 +1,17 @@
-<h2 mat-dialog-title>Place a Sell Offer in Order Ref. {{ order.id }}</h2>
+<h2 mat-dialog-title>Place an Offer in Order Ref. {{ order.id }}</h2>
 
 <mat-dialog-content class="new-offer">
   <mat-form-field>
-    <input type="string" matInput id="quantity" value="Quantity: {{ order.quantity }} MW/h" disabled>
+    <input type="string" matInput id="quantity" value="Quantity: {{ order.quantity }} MWh" disabled>
   </mat-form-field>
   <mat-form-field>
     <input type="string" matInput id="product" value="Product: {{ order.product }}" disabled>
   </mat-form-field>
   <mat-form-field>
-    <input type="number" matInput id="price" placeholder="Insert your offer price in Euros" (change)="setPrice($event)">
+    <input type="number" matInput id="price" placeholder="Price per MWh in €" (change)="setPrice($event)">
+  </mat-form-field>
+  <mat-form-field *ngIf="userInput.totalPrice > 0">
+    <input type="string" matInput id="finalPrice" value="Total price: {{ userInput.totalPrice }} €" disabled>
   </mat-form-field>
   <button [disabled]="submittingOffer" mat-raised-button color="primary" (click)="submitOffer()">
     PLACE OFFER
