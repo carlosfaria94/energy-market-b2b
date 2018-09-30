@@ -72,7 +72,7 @@ contract('Simulator', accounts => {
     })
 
 
-  it.only('simulate producer signature on escrow token URIs',async () => {
+  it('simulate producer signature on escrow token URIs',async () => {
     const host = web3.currentProvider.host;
     const token = await EnergyToken.deployed();
     const escrow = await EnergyEscrow.deployed();
@@ -90,26 +90,29 @@ contract('Simulator', accounts => {
     await Promise.all(mintPromises);
 
     // get tokenids by user addresses
-    const tokensIds = await energyProducers.reduce(async (prev,addr) => (await prev).concat(await token.getTokensOwnedBy.call(addr)), [])
-    console.log('tokensIds',tokensIds.map(id => id.toString()))
+    const tokensIds = await energyProducers
+          .reduce(async (prev,addr) => (await prev).concat(await token.getTokensOwnedBy.call(addr)), [])
 
     // this code is so unecessarily complicated that I am crying... what was wrong with me!
     // approve other owners for the tokens (in this case escrow)
     // TODO: should be possible run approve by the creator of the token
-    const approveTxPromises =  tokensIds.map(async tId =>  token.approve(escrow.address, tId, { from: await token.ownerOf.call(tId) }))
+    const approveTxPromises =  tokensIds
+          .map(async tId =>  token.approve(escrow.address, tId, { from: await token.ownerOf.call(tId) }))
     const approveTx = await Promise.all(approveTxPromises)
-    console.log('approveTxPromises',approveTx.map(tx => Number(tx.receipt.status)))
 
     // create payment on escrow
     const depositValue = 10;
     txParam = { from: supplier.address, value: depositValue }
-    const paymentTxPromises = tokensIds.map(tId => escrow.createPayment(tId, supplier.address,{ from: supplier.address, value: depositValue }))
+    const paymentTxPromises = tokensIds
+          .map(tId => escrow.createPayment(tId, supplier.address,{ from: supplier.address, value: depositValue }))
     const paymentTx = await Promise.all(paymentTxPromises);
-    console.log('paymentTx',paymentTx.map(tx => Number(tx.receipt.status)))
 
     const eth = Simulator.getEthObj(host)
-    await Simulator.simulateProducer(eth, token.address, escrow.address, producerPrivateKey);
+    const signedURIs = await Simulator.simulateProducer(eth, token.address, escrow.address, producerPrivateKey);
 
-    // TODO test that the simulator works properly
+    const expectedTotalTokes = totalMintedTokens / energyProducers.length;
+    assert.equal(expectedTotalTokes, signedURIs.signedTokenURIs.length);
+    const signers = Simulator.recoverURISigner(eth,signedURIs.tokenURIs,signedURIs.signedTokenURIs)
+    signers.forEach(s => s === producer.address);
   })
 });

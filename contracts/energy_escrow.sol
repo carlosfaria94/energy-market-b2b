@@ -27,7 +27,7 @@ contract EnergyEscrow is ERC721Holder {
     }
 
     function getPaymentDetails(uint256 _orderId) external view returns (address producer, address supplier, uint value) {
-      Payment p = payments[_orderId];
+      Payment storage p = payments[_orderId];
       return (p.producer, p.supplier, p.value);
     }
 

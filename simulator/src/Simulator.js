@@ -5,7 +5,6 @@ const path = require('path');
 const Eth = require('web3-eth');
 const solc = require('solc');
 
-console.log('index file running');
 
 const TOKENS_INTERFACE = fs.readFileSync(path.join(__dirname, 'ContractInterface.sol'),{ encoding: 'utf8' });
 const TOKEN_CONTRACT = solc.compile(TOKENS_INTERFACE, 1);
@@ -51,7 +50,6 @@ const recoverURISigner = (eth, tokenURIs, signedTokenURIs) => {
 
 const simulateProducer = async (eth, tokenAddress, escrowAddress, producerPrivateKey) => {
   const allEscrowTokens = await getOwnerTokens(eth, tokenAddress, escrowAddress);
-  console.log('allEscrowTokens: ',allEscrowTokens)
 
   const wallet = eth.accounts.wallet.add(producerPrivateKey);
   // const token = getTokenContract(eth,tokenAddress);
@@ -60,9 +58,8 @@ const simulateProducer = async (eth, tokenAddress, escrowAddress, producerPrivat
   const filterProducerTokens = allEscrowTokens.filter((id,idx) => escrowPaymentDetails[idx].producer === wallet.address);
 
   const tokenURIs = await getTokensURI(eth, tokenAddress, filterProducerTokens);
-  console.log(tokenURIs)
   const signedTokenURIs = await signURIs(eth, producerPrivateKey, tokenURIs);
-  console.log(signedTokenURIs)
+  return { tokenURIs, signedTokenURIs };
 
   // TODO: SIMULATE PROUDUCER SIGNING THEIR TOKENS
   // FILTER PRODUCER.ADDRESS PAYMENTS TOKEN IDS
