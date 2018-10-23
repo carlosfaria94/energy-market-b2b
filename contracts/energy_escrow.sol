@@ -20,10 +20,15 @@ contract EnergyEscrow is ERC721Holder {
 
     // orderId => Payment
     mapping(uint256 => Payment) public payments;
-    EnergyToken public energyToken;
+    EnergyToken private energyToken;
 
     constructor(EnergyToken _energyToken) public {
         energyToken = _energyToken;
+    }
+
+    function getPaymentDetails(uint256 _orderId) external view returns (address producer, address supplier, uint value) {
+      Payment storage p = payments[_orderId];
+      return (p.producer, p.supplier, p.value);
     }
 
     function createPayment(uint256 _tokenId, address _supplier) external payable {
@@ -47,7 +52,7 @@ contract EnergyEscrow is ERC721Holder {
         withdrawPayment(tokenId);
     }
 
-    function verifyHash(bytes32 h, bytes signature) public pure returns (address) {
+    function verifyHash(bytes32 h, bytes signature) private pure returns (address) {
         bytes32 r;
         bytes32 s;
         uint8 v;

@@ -1,0 +1,8 @@
+{
+    "esnext": true,
+    "mocha": true,
+    "node": false,
+    "globals": {
+        "contract": true,
+    }
+}
